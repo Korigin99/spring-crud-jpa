@@ -18,7 +18,6 @@ import lombok.Setter;
 public class Process {
 
   @Id
-  @GeneratedValue(strategy = GenerationType.AUTO)
   @Column(name = "process_number")
   private long processNumber;
   @Column(name = "process_name")
