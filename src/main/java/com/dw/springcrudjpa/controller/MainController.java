@@ -81,7 +81,7 @@ public class MainController {
     return processrepo.findById(id).get();
   }
 
-  // 학생 삭제
+  // 과정 삭제
   @DeleteMapping("/process/{number}")
   public boolean callDeleteProcess(@PathVariable Long number) {
     try {
@@ -93,9 +93,9 @@ public class MainController {
     }
   }
 
-  // 학생 정보 수정
+  // 과정 정보 수정
   @PatchMapping("/process")
-  public Process updateprocess(@RequestBody Process process) {
+  public Process updateProcess(@RequestBody Process process) {
     process = processrepo.save(process);
     return process;
   }
