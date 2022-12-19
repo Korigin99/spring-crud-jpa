@@ -179,7 +179,7 @@
       var num = $('#addProcessNumber').val();
       var name = $('#addProcessName').val();
       var processClass = $('#addProcessClass').val();
-      var period = $('#addProcessPeriod-1').val() + '-' + $('#addProcessPeriod-2').val();
+      var period = $('#addProcessPeriod-1').val() + '~' + $('#addProcessPeriod-2').val();
       var teacher = $('#addProcessTeacher').val();
 
       var data = {
@@ -228,7 +228,7 @@
       var num = $('#processNumber').val();
       var name = $('#processName').val();
       var processClass = $('#processClass').val();
-      var period = $('#processPeriod-1').val() + '-' + $('#processPeriod-2').val();
+      var period = $('#processPeriod-1').val() + '~' + $('#processPeriod-2').val();
       var teacher = $('#processTeacher').val();
 
       var jsonData = {
@@ -279,18 +279,14 @@
         contentType: 'application/json',
         dataType: 'json',
         success: function (response) {
-          console.log('상세조히' + response);
           $('#processNumber').val(response.processNumber);
           $('#processName').val(response.processName);
           $('#processClass').val(response.processClass);
-          var date = response.processPeriod.split('-');
+          var date = response.processPeriod.split('~');
 
-          console.log(date[1]);
-          var date_1 = new Date(date[0] + date[1] + date[2]);
-          var date_2 = new Date(date[3], date[4], date[5]);
-          console.log(date_1);
-          $('#processPeriod-1').val(date_1);
-          $('#processPeriod-2').val(date_2);
+          console.log(date[0]);
+          $('#processPeriod-1').val(date[0]);
+          $('#processPeriod-2').val(date[1]);
           $('#processTeacher').val(response.processTeacher);
         },
       });
