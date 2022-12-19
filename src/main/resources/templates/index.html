@@ -188,6 +188,14 @@
         success: function (response) {
           console.log(response);
           for (var i = 0; i < response.length; i++) {
+            var tel = '010-';
+            var tel_split = response[i].studentTel.split('');
+            for (var j = 0; j < tel_split.length; j++) {
+              if (j >= 3 && j <= 6) {
+                tel += tel_split[j];
+              }
+            }
+            tel += '-****';
             avg += response[i].studentAge;
             table +=
               '<tr onclick="getData(' +
@@ -199,7 +207,7 @@
               '</td><td>' +
               response[i].studentAge +
               '</td><td>' +
-              response[i].studentTel +
+              tel +
               '</td><td>' +
               response[i].studentAddr +
               '</td><td>' +
@@ -217,7 +225,7 @@
     function doAdd() {
       var name = $('#addStudentName').val();
       var age = parseInt($('#addStudentAge').val());
-      var tel = parseInt($('#addStudentTel').val());
+      var tel = String($('#addStudentTel').val());
       var addr = $('#addStudentAddr').val();
       var processNumber = parseInt($('#addProcessNumber').val());
 
