@@ -30,8 +30,11 @@
             <button class="postBtn" onclick="getPostCode()">우편번호 찾기</button>
           </div>
           <div class="input-box">
-            <label>과정 번호 : </label>
-            <input id="addProcessNumber" type="number" placeholder=" - 를 제거하고 입력하세요." />
+            <label>과정 명 : </label>
+            <select name="" id="addProcessSelect">
+              <option value="" disabled selected>--과정을 선택해 주세요--</option>
+            </select>
+            <!-- <input id="addProcessNumber" type="number" placeholder=" - 를 제거하고 입력하세요." /> -->
           </div>
           <div class="btn-area">
             <a href="#" class="btn-cancel" onclick="">등록 취소</a>
@@ -67,8 +70,8 @@
             <button class="postBtn" onclick="getPostCode()">우편번호 찾기</button>
           </div>
           <div class="input-box">
-            <label>과정 번호 : </label>
-            <input id="ProcessNumber" type="number" placeholder=" - 를 제거하고 입력하세요." />
+            <label>과정 명 : </label>
+            <select name="" id="processSelect"></select>
           </div>
           <div class="btn-area">
             <a href="#" class="btn-update" onclick="doUpdate()">수정</a>
@@ -175,6 +178,29 @@
   <!-- 도로명주소 CDN -->
   <script src="https://t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
   <script>
+    // 과정 선택 api
+    loadProcess();
+    function loadProcess() {
+      var select = $('#processSelect');
+      var addSelect = $('#addProcessSelect');
+      $.ajax({
+        url: '/process',
+        type: 'GET',
+        contentType: 'application/json',
+        dataType: 'json',
+        success: function (response) {
+          for (var i = 0; i < response.length; i++) {
+            var option = $('<option value = "' + response[i].processNumber + '">' + response[i].processName + '</option>');
+            select.append(option);
+          }
+          for (var i = 0; i < response.length; i++) {
+            var option = $('<option value = "' + response[i].processNumber + '">' + response[i].processName + '</option>');
+            addSelect.append(option);
+          }
+        },
+      });
+    }
+
     loadStudent();
     // 모든 학생 불러오는 함수
     function loadStudent() {
@@ -186,7 +212,6 @@
         contentType: 'application/json',
         dataType: 'json',
         success: function (response) {
-          console.log(response);
           for (var i = 0; i < response.length; i++) {
             var tel = '010-';
             var tel_split = response[i].studentTel.split('');
@@ -227,7 +252,9 @@
       var age = parseInt($('#addStudentAge').val());
       var tel = String($('#addStudentTel').val());
       var addr = $('#addStudentAddr').val();
-      var processNumber = parseInt($('#addProcessNumber').val());
+      var processNumber = $('#addProcessSelect').val();
+
+      console.log(processNumber);
 
       if (name == '' || age == '' || tel == '' || addr == '' || processNumber == '') {
         alert('공백이 있습니다');
@@ -283,7 +310,7 @@
       var age = $('#studentAge').val();
       var phone = $('#studentTel').val();
       var addr = $('#studentAddr').val();
-      var processNumber = $('#ProcessNumber').val();
+      var processNumber = $('#processSelect').val();
 
       var jsonData = {
         studentNumber: num,
@@ -343,7 +370,7 @@
           $('#studentAge').val(response.studentAge);
           $('#studentTel').val(response.studentTel);
           $('#studentAddr').val(response.studentAddr);
-          $('#ProcessNumber').val(response.processNumber.processNumber);
+          $('#processSelect').val(response.processNumber.processNumber).prop('seleted', true);
         },
       });
     }
